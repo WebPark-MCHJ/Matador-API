@@ -6,32 +6,16 @@ const path = require("path");
 const { getHeapStatistics } = require("v8");
 const { stringify } = require("querystring");
 
-function metalPrice(url) {
-  setInterval(async () => {
-    await fetch("https://lepricon.uz/web/nd-birjadata/birja-data")
-      .then((res) => res.json())
-      .then((res) => {
-        const jsonString = JSON.stringify(res);
-
-        fs.writeFile("./metal.json", jsonString, (err) => {
-          if (err) {
-            console.log("Error writing file", err);
-          } else {
-            console.log("Successfully wrote file");
-          }
-        });
-      })
-
-      .catch((err) => console.log(err));
-	  
-	  app.get("/metal", (req, res) => {
-	    res.sendFile(path.join(__dirname, "/", "metal.json"));
-	  });
-  }, 6000);
+async function metalPrice(url) {
+  
+    return await fetch("https://lepricon.uz/web/nd-birjadata/birja-data")
+      .then((res) => res.json()).then(result => result);
 }
 
 metalPrice();
-
-
+app.get("/metal", async (req, res) => {
+  const data = await metalPrice();
+  res.send(data)
+})
 
 app.listen(3000);
