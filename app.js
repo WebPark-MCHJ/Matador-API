@@ -23,13 +23,15 @@ function metalPrice(url) {
       })
 
       .catch((err) => console.log(err));
+	  
+	  app.get("/metal", (req, res) => {
+	    res.sendFile(path.join(__dirname, "/", "metal.json"));
+	  });
   }, 6000);
 }
 
 metalPrice();
 
-app.get("/metal", (req, res) => {
-  res.sendFile(path.join(__dirname, "/", "metal.json"));
-});
+
 
 app.listen(3000);
